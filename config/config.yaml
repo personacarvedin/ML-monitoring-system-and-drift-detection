@@ -1,0 +1,36 @@
+monitoring:
+  check_interval_seconds: 60
+  reference_window_size: 1000
+  production_window_size: 500
+
+drift:
+  ks_threshold: 0.05
+  psi_threshold: 0.2
+  chi2_threshold: 0.05
+  mmd_threshold: 0.05
+  min_samples: 50
+
+alerts:
+  enabled: true
+  cooldown_minutes: 30
+  channels:
+    slack:
+      enabled: false
+      webhook_url: ""
+    email:
+      enabled: false
+      smtp_host: smtp.gmail.com
+      smtp_port: 587
+      sender: ""
+      recipients: []
+    webhook:
+      enabled: false
+      url: ""
+
+storage:
+  db_path: ml_monitor.db
+  retention_days: 90
+
+logging:
+  level: INFO
+  format: "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
