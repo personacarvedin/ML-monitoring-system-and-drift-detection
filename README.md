@@ -51,6 +51,47 @@ Everything is logged to SQLite with a timestamp. The alerter runs after all thre
 
 ---
 
+## Project Structure
+
+```text
+ml_monitor/
+├── README.md
+├── requirements.txt
+├── config/
+│   └── config.yaml
+├── ml_monitor/
+│   ├── __init__.py
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── monitor.py          # Main monitoring orchestrator
+│   │   └── registry.py         # Model registry
+│   ├── drift/
+│   │   ├── __init__.py
+│   │   ├── detector.py         # Drift detection engine
+│   │   ├── statistical.py      # KS, PSI, chi-square tests
+│   │   └── embeddings.py       # Embedding drift (MMD)
+│   ├── metrics/
+│   │   ├── __init__.py
+│   │   ├── performance.py      # Accuracy, F1, AUC, RMSE etc.
+│   │   └── data_quality.py     # Nulls, outliers, schema checks
+│   ├── alerts/
+│   │   ├── __init__.py
+│   │   ├── alerter.py          # Alert dispatcher
+│   │   └── channels.py         # Slack / email / webhook
+│   ├── storage/
+│   │   ├── __init__.py
+│   │   └── store.py            # Time-series log store (SQLite)
+│   └── dashboard/
+│       ├── __init__.py
+│       └── app.py              # Streamlit dashboard
+├── examples/
+│   ├── train_baseline.py
+│   └── simulate_drift.py
+└── tests/
+    ├── test_drift.py
+    └── test_metrics.py
+```
+
 ## System Flow
 
 ```
@@ -111,7 +152,7 @@ Clone the repository and set up the environment (Mac and Linux):
 
 ```bash
 git clone https://github.com/personacarvedin/ML-monitoring-system-and-drift-detection.git
-cd ml-monitor
+cd ML-monitoring-system-and-drift-detection
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
@@ -129,7 +170,7 @@ Trains the model and simulates 30 days of production data with gradual drift and
 python examples/train_baseline.py
 ```
 
-> 📸 _[screenshot — train_baseline.py terminal output]_
+![Train Baseline](https://raw.githubusercontent.com/personacarvedin/ML-monitoring-system-and-drift-detection/main/Screenshots/Train_baseline.png)
 
 ---
 
@@ -141,7 +182,7 @@ Registers the drift demo model and simulates 30 days of three distinct drift pat
 python examples/simulate_drift.py
 ```
 
-> 📸 _[screenshot — simulate_drift.py terminal output]_
+![Simulate Drift](https://raw.githubusercontent.com/personacarvedin/ML-monitoring-system-and-drift-detection/main/Screenshots/Simulate_drift.png)
 
 ---
 
@@ -155,7 +196,7 @@ python data_showing.py
 
 This will show the three tables — `drift_records`, `metric_records`, and `alert_records` — with their columns and sample rows, confirming that drift flags, metric values, and alert messages are all being stored as expected.
 
-> 📸 _[screenshot — data_showing.py terminal output showing all three tables]_
+![SQL Screenshot](https://raw.githubusercontent.com/personacarvedin/ML-monitoring-system-and-drift-detection/main/Screenshots/SQL.png)
 
 ---
 
@@ -179,11 +220,11 @@ The dashboard has five sections:
 
 **Feature Drill-down** — select any individual feature to see its test statistic and p-value plotted over time, with the significance threshold drawn as a reference line.
 
-> 📸 _[screenshot — full dashboard overview]_
+![Dashboard Screenshot](https://raw.githubusercontent.com/personacarvedin/ML-monitoring-system-and-drift-detection/main/Screenshots/Dashboard.png)
 
-> 📸 _[screenshot — drift heatmap]_
+![Heatmap Screenshot](https://raw.githubusercontent.com/personacarvedin/ML-monitoring-system-and-drift-detection/main/Screenshots/Heatmap.png)
 
-> 📸 _[screenshot — feature drill-down chart]_
+![Feature Drilldown Screenshot](https://raw.githubusercontent.com/personacarvedin/ML-monitoring-system-and-drift-detection/main/Screenshots/feature_drilldown.png)
 
 ---
 
